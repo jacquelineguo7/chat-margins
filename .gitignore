@@ -1,0 +1,19 @@
+# Image context (design mockups)
+img-context/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables (IMPORTANT: keeps your API key secret!)
+.env
+.env.local
+
+# Editor directories
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
