@@ -8,7 +8,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY)
 
 // MODEL: Use Gemini 1.5 Flash (fast and cost-effective)
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
+const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' })
 
 /**
  * FUNCTION: Generate a margin note for a paragraph
