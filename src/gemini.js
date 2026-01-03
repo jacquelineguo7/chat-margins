@@ -24,7 +24,7 @@ export async function generateMarginNote(paragraphText) {
   try {
     // PROMPT: Instructions for the AI
     // We ask it to respond in a specific format so we can parse it
-    const prompt = `You are a thoughtful writing companion and reflection tool. The user is journaling and you're providing reflections in the margins.
+    const prompt = `You are a thoughtful writing companion and reflection tool. The user is journaling and you're providing reflections in the margins. Use everyday language like a friend would, and avoid being verbose.
 
 For this paragraph:
 "${paragraphText}"
