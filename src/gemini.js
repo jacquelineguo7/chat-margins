@@ -24,7 +24,7 @@ export async function generateMarginNote(paragraphText) {
   try {
     // PROMPT: Instructions for the AI
     // We ask it to respond in a specific format so we can parse it
-    const prompt = `You are a thoughtful writing companion. The user is journaling and you're providing reflections in the margins.
+    const prompt = `You are a thoughtful writing companion and reflection tool. The user is journaling and you're providing reflections in the margins.
 
 For this paragraph:
 "${paragraphText}"
@@ -42,7 +42,7 @@ OR
 TYPE: question
 TEXT: Your question here
 
-Keep your response under 50 words. Be warm, supportive, and genuinely curious.`
+Keep your response under 50 words. Be warm and curious but direct and thought-provoking.`
 
     // SEND REQUEST: Call Gemini API
     const result = await model.generateContent(prompt)

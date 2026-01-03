@@ -99,14 +99,16 @@
 
 /* MARGIN NOTES: Individual note containers */
 .margin-notes-list {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+  position: relative;
+  /* Changed from flex to relative positioning so children can use absolute positioning */
+  width: 100%;
+  height: 100%;
 }
 
 .margin-note-container {
-  position: relative;
+  /* Position is now set inline via style prop */
   /* No background by default - just text for commentary */
+  margin-bottom: 28px;
 }
 
 .paragraph-preview {
