@@ -103,21 +103,6 @@ function App() {
     }
   }
 
-  // TEMPORARY: Test function to add sample notes
-  const addTestNotes = () => {
-    setMarginNotes({
-      0: {
-        text: "This opening feels vulnerable and honest. You're acknowledging both the stress and the struggle with self-doubt.",
-        type: "commentary",
-        isVisible: true
-      },
-      1: {
-        text: "Given how much time you spent, what is the single most confusing concept from that half-hour that you can ask your professor about first?",
-        type: "question",
-        isVisible: true
-      }
-    })
-  }
 
   return (
     <div className="app-container">
@@ -125,21 +110,6 @@ function App() {
       <div className="document-card">
         {/* LEFT COLUMN: Writing editor */}
         <div className="editor-column">
-          {/* TEMPORARY: Test button */}
-          <button
-            onClick={addTestNotes}
-            style={{
-              position: 'absolute',
-              top: '10px',
-              right: '10px',
-              padding: '8px 12px',
-              fontSize: '11px',
-              cursor: 'pointer',
-              zIndex: 10
-            }}
-          >
-            Add Test Notes
-          </button>
           <textarea
             className="editor"
             value={content}
