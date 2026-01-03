@@ -52,25 +52,6 @@ function App() {
   // We use double newlines as paragraph separators
   const paragraphs = content.split('\n\n').filter(p => p.trim() !== '')
 
-  // STATE: Track previous paragraph count
-  const prevParagraphCount = useRef(0)
-
-  // EFFECT: Auto-generate margin notes when new paragraphs are created
-  useEffect(() => {
-    // Only generate notes when paragraph count increases (user pressed Enter Enter)
-    if (paragraphs.length > prevParagraphCount.current) {
-      // Generate note for the NEW paragraph (the one before the latest)
-      // We target the second-to-last paragraph because the last one is likely still being typed
-      const targetIndex = paragraphs.length - 2
-
-      if (targetIndex >= 0 && paragraphs[targetIndex]) {
-        generateMarginNoteForParagraph(targetIndex, paragraphs[targetIndex])
-      }
-    }
-
-    prevParagraphCount.current = paragraphs.length
-  }, [paragraphs.length]) // Only run when number of paragraphs changes
-
   // FUNCTION: Calculate Y position for each paragraph in the textarea
   const calculateParagraphPositions = () => {
     if (!editorRef.current) return
@@ -133,9 +114,38 @@ function App() {
     return () => window.removeEventListener('resize', calculateParagraphPositions)
   }, [content])
 
+  // REF: Track if we just pressed Enter (for detecting double Enter)
+  const lastKeyWasEnter = useRef(false)
+
   // FUNCTION: Handle when user types in the editor
   const handleContentChange = (e) => {
     setContent(e.target.value)
+  }
+
+  // FUNCTION: Detect when user presses Enter twice
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      // If the last key was also Enter, we have a double Enter!
+      if (lastKeyWasEnter.current) {
+        // Get the current paragraphs (before the new one is created)
+        const currentParagraphs = content.split('\n\n').filter(p => p.trim() !== '')
+        const lastParagraphIndex = currentParagraphs.length - 1
+
+        // Generate note for the paragraph we just finished
+        if (lastParagraphIndex >= 0 && currentParagraphs[lastParagraphIndex]) {
+          // Use setTimeout to ensure we don't generate twice
+          setTimeout(() => {
+            generateMarginNoteForParagraph(lastParagraphIndex, currentParagraphs[lastParagraphIndex])
+          }, 100)
+        }
+
+        lastKeyWasEnter.current = false
+      } else {
+        lastKeyWasEnter.current = true
+      }
+    } else {
+      lastKeyWasEnter.current = false
+    }
   }
 
   // FUNCTION: Generate AI margin note for a paragraph
@@ -194,6 +204,7 @@ function App() {
             className="editor"
             value={content}
             onChange={handleContentChange}
+            onKeyDown={handleKeyDown}
             placeholder="Start writing... Press Enter twice to create a new paragraph."
           />
         </div>
@@ -204,9 +215,9 @@ function App() {
             <>
               <div className="margin-prompt">
                 <span className="margin-prompt-icon">⏎</span>
-                <span>enter to reflect</span>
+                <span>press enter twice to reflect</span>
               </div>
-              <p className="empty-state">Your AI reflections will appear here as you write.</p>
+              <p className="empty-state">Reflections will appear here as you write.</p>
             </>
           ) : (
             <div className="margin-notes-list">
