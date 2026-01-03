@@ -14,6 +14,9 @@ body {
   /* Beige/cream background like the mockup */
   background-color: #f5ebe0;
   color: #333;
+  /* Prevent scrolling */
+  height: 100vh;
+  overflow: hidden;
 }
 
 #root {
