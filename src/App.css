@@ -1,3 +1,89 @@
+/* TEMPORARY: Typing controls panel */
+.typing-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.controls-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.controls-header button,
+.show-controls-btn {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.controls-header button:hover,
+.show-controls-btn:hover {
+  background: #555;
+}
+
+.show-controls-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.control-group {
+  margin-bottom: 16px;
+}
+
+.control-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.control-group input[type="range"] {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.control-group input[type="color"] {
+  margin-left: 8px;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.control-group span {
+  margin-left: 8px;
+  font-size: 11px;
+  color: #666;
+  font-family: monospace;
+}
+
 /* MAIN LAYOUT: Centered document card */
 .app-container {
   display: flex;
@@ -42,10 +128,18 @@
   outline: none;
   font-size: 18px;
   line-height: 1.8;
-  font-family: 'Georgia', serif;
+  font-family: 'Goudy Bookletter 1911', 'Georgia', serif;
   resize: none;
   background-color: transparent;
   color: #2d2d2d;
+  /* Smooth scrolling behavior */
+  scroll-behavior: smooth;
+}
+
+/* Custom text selection colors */
+.editor::selection {
+  background-color: #A0441A; /* Rust/brown background */
+  color: #FFEA4F; /* Yellow text */
 }
 
 .editor::placeholder {
