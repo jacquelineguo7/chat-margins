@@ -200,14 +200,46 @@
   }
 }
 
+/* MOBILE: Stack vertically on mobile devices */
 @media (max-width: 768px) {
-  .document-card {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
+  /* Add padding around the document on mobile */
+  .app-container {
+    padding: 20px;
   }
 
+  /* Change from grid to vertical stacking */
+  /* IMPORTANT: margins-column will appear FIRST (on top) */
+  .document-card {
+    display: flex;
+    flex-direction: column-reverse; /* This reverses the order: margins on top, editor below */
+    min-height: auto; /* Don't force full viewport height on mobile */
+    overflow: visible; /* Allow content to flow naturally */
+  }
+
+  /* Reduce editor padding on mobile for more usable space */
+  .editor {
+    padding: 30px 20px;
+    font-size: 16px; /* Slightly smaller on mobile */
+    min-height: 60vh; /* Give editor reasonable minimum height */
+  }
+
+  /* Remove the shadow on mobile for cleaner look */
+  .editor-column {
+    box-shadow: none;
+    border: none; /* Remove all borders on mobile */
+  }
+
+  /* Adjust margins column for mobile - this will appear at TOP */
   .margins-column {
-    border-left: none;
-    border-top: 1px solid #e8ddd0;
+    border: none; /* Remove all borders on mobile */
+    padding: 30px 20px; /* Match editor padding */
+    position: relative; /* Change from absolute positioning on mobile */
+  }
+
+  /* Reset absolute positioning for mobile - stack normally */
+  .margin-note-container {
+    position: relative !important;
+    top: auto !important;
+    width: 100% !important;
   }
 }
