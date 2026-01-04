@@ -24,13 +24,6 @@ function App() {
   // REF: Reference to the textarea element
   const editorRef = useRef(null)
 
-  // TEMPORARY STATE: Control panel for typing feel experimentation
-  const [showControls, setShowControls] = useState(true)
-  const [caretColor, setCaretColor] = useState('#d06d16')
-  const [caretWidth, setCaretWidth] = useState(1) // 1-5px
-  const [blinkSpeed, setBlinkSpeed] = useState(1000) // milliseconds
-  const [letterFadeIn, setLetterFadeIn] = useState(0) // 0-500ms
-  const [letterScale, setLetterScale] = useState(0) // 0-0.2 (scaling effect)
 
   // EFFECT: Load saved content from localStorage when app starts
   // This runs once when the component first appears
@@ -203,94 +196,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* TEMPORARY CONTROLS: Design tool for typography experimentation */}
-      {showControls && (
-        <div className="typing-controls">
-          <div className="controls-header">
-            <h3>Typing Feel Controls (Temporary)</h3>
-            <button onClick={() => setShowControls(false)}>Hide</button>
-          </div>
-
-          <div className="control-group">
-            <label>
-              Caret Color:
-              <input
-                type="color"
-                value={caretColor}
-                onChange={(e) => setCaretColor(e.target.value)}
-              />
-              <span>{caretColor}</span>
-            </label>
-          </div>
-
-          <div className="control-group">
-            <label>
-              Caret Width: {caretWidth}px
-              <input
-                type="range"
-                min="1"
-                max="5"
-                step="1"
-                value={caretWidth}
-                onChange={(e) => setCaretWidth(Number(e.target.value))}
-              />
-            </label>
-          </div>
-
-          <div className="control-group">
-            <label>
-              Blink Speed: {blinkSpeed}ms
-              <input
-                type="range"
-                min="300"
-                max="2000"
-                step="100"
-                value={blinkSpeed}
-                onChange={(e) => setBlinkSpeed(Number(e.target.value))}
-              />
-            </label>
-          </div>
-
-          <div className="control-group">
-            <label>
-              Letter Fade-in: {letterFadeIn}ms
-              <input
-                type="range"
-                min="0"
-                max="500"
-                step="50"
-                value={letterFadeIn}
-                onChange={(e) => setLetterFadeIn(Number(e.target.value))}
-              />
-            </label>
-          </div>
-
-          <div className="control-group">
-            <label>
-              Letter Scale Effect: {letterScale.toFixed(2)}
-              <input
-                type="range"
-                min="0"
-                max="0.2"
-                step="0.02"
-                value={letterScale}
-                onChange={(e) => setLetterScale(Number(e.target.value))}
-              />
-            </label>
-          </div>
-        </div>
-      )}
-
-      {/* Toggle button when controls are hidden */}
-      {!showControls && (
-        <button
-          className="show-controls-btn"
-          onClick={() => setShowControls(true)}
-        >
-          Show Typing Controls
-        </button>
-      )}
-
       {/* DOCUMENT CARD: Contains both editor and margins */}
       <div className="document-card">
         {/* LEFT COLUMN: Writing editor */}
@@ -301,20 +206,17 @@ function App() {
             value={content}
             onChange={handleContentChange}
             onKeyDown={handleKeyDown}
-            placeholder="Start writing... Press Enter twice to create a new paragraph."
+            placeholder="Start writing..."
             style={{
-              caretColor: caretColor,
-              // Note: caret-width is not widely supported yet, but we'll add the CSS variable
-              '--caret-width': `${caretWidth}px`,
-              '--blink-speed': `${blinkSpeed}ms`,
-              transition: letterFadeIn > 0 ? `opacity ${letterFadeIn}ms ease-in` : 'none'
+              caretColor: '#d06d16'
             }}
           />
         </div>
 
         {/* RIGHT COLUMN: Margin notes */}
         <div className="margins-column">
-          {paragraphs.length === 0 ? (
+          {/* Show instructions until we have at least one note */}
+          {Object.keys(marginNotes).length === 0 ? (
             <>
               <div className="margin-prompt">
                 <span className="margin-prompt-icon">⏎</span>
@@ -337,7 +239,7 @@ function App() {
                 return (
                   <div
                     key={index}
-                    className="margin-note-container"
+                    className="margin-note-container fade-in"
                     style={{
                       position: 'absolute',
                       top: `${yPosition}px`,
