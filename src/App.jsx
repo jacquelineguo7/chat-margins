@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
+// Import both prompting systems
 import { generateMarginNote } from './gemini'
+import { generateMarginNote as generateAdaptiveNote } from './gemini-adaptive'
 
 function App() {
   // STATE: This is where we store the user's writing content
@@ -21,6 +23,11 @@ function App() {
   // STATE: Store Y positions for each paragraph
   const [paragraphPositions, setParagraphPositions] = useState({})
 
+  // STATE: Track which prompting mode is active
+  // 'journaling' = original empathetic prompts
+  // 'adaptive' = Gemini self-selects prompt based on content type
+  const [promptMode, setPromptMode] = useState('journaling')
+
   // REF: Reference to the textarea element
   const editorRef = useRef(null)
 
@@ -30,12 +37,16 @@ function App() {
   useEffect(() => {
     const savedContent = localStorage.getItem('chatMargins-content')
     const savedNotes = localStorage.getItem('chatMargins-notes')
+    const savedPromptMode = localStorage.getItem('chatMargins-promptMode')
 
     if (savedContent) {
       setContent(savedContent)
     }
     if (savedNotes) {
       setMarginNotes(JSON.parse(savedNotes))
+    }
+    if (savedPromptMode) {
+      setPromptMode(savedPromptMode)
     }
   }, []) // Empty array means "run once on mount"
 
@@ -48,6 +59,11 @@ function App() {
   useEffect(() => {
     localStorage.setItem('chatMargins-notes', JSON.stringify(marginNotes))
   }, [marginNotes]) // Runs whenever 'marginNotes' changes
+
+  // EFFECT: Save prompt mode to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('chatMargins-promptMode', promptMode)
+  }, [promptMode]) // Runs whenever 'promptMode' changes
 
   // FUNCTION: Split content into paragraphs
   // We use double newlines as paragraph separators
@@ -170,7 +186,10 @@ function App() {
       }))
 
       // Call Gemini API to generate the note
-      const note = await generateMarginNote(paragraphText)
+      // Use the appropriate prompt system based on selected mode
+      const note = promptMode === 'journaling'
+        ? await generateMarginNote(paragraphText)
+        : await generateAdaptiveNote(paragraphText)
 
       // Update with actual note
       setMarginNotes(prev => ({
@@ -191,6 +210,11 @@ function App() {
         return newNotes
       })
     }
+  }
+
+  // FUNCTION: Toggle between prompt modes
+  const togglePromptMode = () => {
+    setPromptMode(prevMode => prevMode === 'journaling' ? 'adaptive' : 'journaling')
   }
 
 
@@ -215,6 +239,22 @@ function App() {
 
         {/* RIGHT COLUMN: Margin notes */}
         <div className="margins-column">
+          {/* MODE TOGGLE BUTTON */}
+          <div className="mode-toggle-container">
+            <button
+              className="mode-toggle-button"
+              onClick={togglePromptMode}
+              title={promptMode === 'journaling' ? 'Switch to Adaptive Mode' : 'Switch to Journaling Mode'}
+            >
+              {promptMode === 'journaling' ? '📓 Journaling' : '🤖 Adaptive'}
+            </button>
+            <span className="mode-description">
+              {promptMode === 'journaling'
+                ? 'Empathetic reflections'
+                : 'Context-aware responses'}
+            </span>
+          </div>
+
           {/* Show instructions until we have at least one note */}
           {Object.keys(marginNotes).length === 0 ? (
             <>

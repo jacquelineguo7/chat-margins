@@ -81,6 +81,61 @@
   font-weight: 500;
 }
 
+/* MODE TOGGLE: Switch between prompting modes */
+.mode-toggle-container {
+  /* Position at top of margins column */
+  margin-bottom: 30px;
+  /* Center the content */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  /* Subtle separator line below */
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e8dcc8;
+}
+
+.mode-toggle-button {
+  /* Button styling */
+  background-color: #ffffff;
+  border: 2px solid #d06d16;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #d06d16;
+  cursor: pointer;
+  /* Smooth transitions for hover effects */
+  transition: all 0.2s ease;
+  /* Remove default button outline */
+  outline: none;
+  /* Font family to match the app */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Hover state: Invert colors */
+.mode-toggle-button:hover {
+  background-color: #d06d16;
+  color: #ffffff;
+  /* Slight scale up for interactivity feedback */
+  transform: scale(1.05);
+}
+
+/* Active/pressed state: Slightly shrink */
+.mode-toggle-button:active {
+  transform: scale(0.98);
+}
+
+/* Description text below button */
+.mode-description {
+  font-size: 11px;
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  /* Smooth fade when text changes */
+  transition: opacity 0.2s ease;
+}
+
 .empty-state {
   color: #b8a899;
   font-size: 13px;
